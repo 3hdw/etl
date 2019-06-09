@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="6/9/2019 8:49:45 AM"
@@ -11,9 +11,1346 @@
   DTS:LocaleID="1045"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionGUID="{3DC7BDC5-A7B3-49A7-A683-17E63FFD9DFF}">
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{8544DCBA-9D79-46DB-9C0A-1A62F0BD4169}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[LocalHost]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+      DTS:ObjectName="LocalHost">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=.;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[LocalHost.Projekt2019]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{DADF0B90-709E-4968-856D-D885FC9E804D}"
+      DTS:ObjectName="LocalHost.Projekt2019">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=.;Initial Catalog=Projekt2019;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Połączenie do pliku z danymi do projektu]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{9BFB2115-72D5-425C-8FD6-FCDD6DD9329B}"
+      DTS:ObjectName="Połączenie do pliku z danymi do projektu">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1045"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\Users\piotr\Desktop\PROJEKT\dane\vt_statewide_2019_02_25_Projekt.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="raw_row_number"
+              DTS:DTSID="{769426F3-71E6-49C4-ADA5-3A682A70CDB5}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="7"
+              DTS:TextQualified="True"
+              DTS:ObjectName="date"
+              DTS:DTSID="{25149C83-D444-4078-B93E-503B4B8860FE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="7"
+              DTS:TextQualified="True"
+              DTS:ObjectName="time"
+              DTS:DTSID="{71598409-AC20-4419-A644-A36954638CE1}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="location"
+              DTS:DTSID="{C9DAEF38-7BAD-493E-8440-3CD70ECC68EF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="lat"
+              DTS:DTSID="{09889858-97F3-4632-BE12-8F4275A4088E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="lng"
+              DTS:DTSID="{524532B1-5C01-41A4-B334-B6889AAD96F8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="subject_age"
+              DTS:DTSID="{95ECE59A-C9DE-40E3-8E17-4AFEAF00DD78}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="subject_race"
+              DTS:DTSID="{89B57B9F-07E9-4974-835D-3D3BC6B76F12}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="subject_sex"
+              DTS:DTSID="{FCB22A56-BE73-4678-9478-7CEA8D745FCC}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="officer_id_hash"
+              DTS:DTSID="{94DC7CD0-FDAE-42B8-8285-C7A07316D58A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="department_name"
+              DTS:DTSID="{2483A081-D4AF-4BF3-B955-5A4BCF6D8F0B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="type"
+              DTS:DTSID="{033D80C2-1993-43A2-BEB8-AE852DAEF0C8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="arrest_made"
+              DTS:DTSID="{77CC6FC5-D9A4-4178-A25A-FC9AA47C724D}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="citation_issued"
+              DTS:DTSID="{9844DCEC-A7CD-4190-9523-04DAAEB874E4}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="warning_issued"
+              DTS:DTSID="{863D7266-C97E-4100-B2A1-0FD6EF10A25D}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="outcome"
+              DTS:DTSID="{9C9B05BE-9E41-424B-B867-C6283DCD9E09}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="contraband_found"
+              DTS:DTSID="{7BDDC075-CB64-4984-8C79-1A7A442911C3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="search_conducted"
+              DTS:DTSID="{BEF72704-D0D8-4054-953A-2910610F4691}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="search_basis"
+              DTS:DTSID="{F0D4844B-D1A3-4182-86C2-7CECBDF467C4}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="reason_for_search"
+              DTS:DTSID="{A02297C6-2F46-4EEC-9FC2-96B76813E752}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:MaximumWidth="100"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="reason_for_stop"
+              DTS:DTSID="{E0F38A80-F699-447D-BA33-9E44ABEECB1A}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
   <DTS:Variables />
-  <DTS:Executables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Napełnianie hurtowni danymi"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{4E488CB7-7D23-462A-88C7-02959E5A8682}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Napełnianie hurtowni danymi">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{DB950B8A-8821-4EAD-BF10-4EB3EE670138}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Napełnianie tabeli Pomocniczej"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Tabela pomocnicza"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[Helper]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1250</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[LocalHost.Projekt2019]"
+                      connectionManagerRefId="Package.ConnectionManagers[LocalHost.Projekt2019]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[raw_row_number]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="raw_row_number"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[raw_row_number]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[date]"
+                          cachedDataType="date"
+                          cachedName="date"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[date]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[time]"
+                          cachedDataType="date"
+                          cachedName="time"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[time]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[location]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="location"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[location]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_age]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="subject_age"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_age]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_race]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="subject_race"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_race]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_sex]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="subject_sex"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_sex]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[officer_id_hash]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="officer_id_hash"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[officer_id_hash]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[department_name]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="department_name"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[department_name]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[type]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="type"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[type]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[outcome]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="outcome"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[outcome]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[contraband_found]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="contraband_found"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[contraband_found]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[search_conducted]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="search_conducted"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_conducted]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[search_basis]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="search_basis"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_basis]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[reason_for_search]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="reason_for_search"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_search]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]" />
+                        <inputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[reason_for_stop]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="reason_for_stop"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_stop]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[raw_row_number]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="raw_row_number" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[date]"
+                          dataType="dbTimeStamp"
+                          name="date" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[time]"
+                          dataType="dbTimeStamp"
+                          name="time" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[location]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="location" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_age]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="subject_age" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_race]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="subject_race" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_sex]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="subject_sex" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[officer_id_hash]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="officer_id_hash" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[department_name]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="department_name" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="type" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[outcome]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="outcome" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[contraband_found]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="contraband_found" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_conducted]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="search_conducted" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_basis]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="search_basis" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_search]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="reason_for_search" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_stop]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="reason_for_stop" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych"
+                  componentClassID="Microsoft.FlatFileSource"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1045"
+                  name="Żródło danych"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[Połączenie do pliku z danymi do projektu]"
+                      connectionManagerRefId="Package.ConnectionManagers[Połączenie do pliku z danymi do projektu]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[raw_row_number]"
+                          length="50"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]"
+                          name="raw_row_number"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]"
+                          dataType="date"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[date]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]"
+                          name="date"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]"
+                          dataType="date"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[time]"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]"
+                          name="time"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[location]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]"
+                          name="location"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_age]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]"
+                          name="subject_age"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_race]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]"
+                          name="subject_race"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_sex]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]"
+                          name="subject_sex"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[officer_id_hash]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]"
+                          name="officer_id_hash"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[department_name]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]"
+                          name="department_name"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[type]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]"
+                          name="type"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[outcome]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]"
+                          name="outcome"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[contraband_found]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]"
+                          name="contraband_found"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_conducted]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]"
+                          name="search_conducted"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_basis]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]"
+                          name="search_basis"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_search]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]"
+                          name="reason_for_search"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_stop]"
+                          length="100"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]"
+                          name="reason_for_stop"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[raw_row_number]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="raw_row_number" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[date]"
+                          dataType="date"
+                          name="date" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[time]"
+                          dataType="date"
+                          name="time" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[location]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="location" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[lat]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="lat" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[lng]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="lng" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_age]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="subject_age" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_race]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="subject_race" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_sex]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="subject_sex" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[officer_id_hash]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="officer_id_hash" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[department_name]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="department_name" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="type" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[arrest_made]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="arrest_made" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[citation_issued]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="citation_issued" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[warning_issued]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="warning_issued" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[outcome]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="outcome" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[contraband_found]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="contraband_found" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_conducted]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="search_conducted" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_basis]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="search_basis" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_search]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="reason_for_search" />
+                        <externalMetadataColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_stop]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="reason_for_stop" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
+                  endId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Tworzenie struktury Hurtowni danych"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{63000DA8-3CAE-482F-B0E7-BA1450A9781F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Tworzenie struktury Hurtowni danych">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{9C8716D5-E128-42E8-A8F7-D115281BA20C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Tworzenie bazy danych"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE master;&#xA;IF EXISTS (SELECT name FROM sys.databases WHERE name = 'Projekt2019')&#xA;&#x9;BEGIN&#xA;&#x9;&#x9;DROP DATABASE &quot;Projekt2019&quot;&#xA;&#x9;END;&#xA;&#xA;CREATE DATABASE &quot;Projekt2019&quot;;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{06F14B5C-AD0F-4BDE-9ECA-A6CEF23DFF03}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Tworzenie tabeli Pomocniczej"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;CREATE TABLE [Helper] (&#xA;    [raw_row_number] varchar(50),&#xA;    [date] datetime,&#xA;    [time] datetime,&#xA;    [location] varchar(100),&#xA;    [subject_age] varchar(100),&#xA;    [subject_race] varchar(100),&#xA;    [subject_sex] varchar(100),&#xA;    [officer_id_hash] varchar(100),&#xA;    [department_name] varchar(100),&#xA;    [type] varchar(100),&#xA;    [outcome] varchar(100),&#xA;    [contraband_found] varchar(100),&#xA;    [search_conducted] varchar(100),&#xA;    [search_basis] varchar(100),&#xA;    [reason_for_search] varchar(100),&#xA;    [reason_for_stop] varchar(100)&#xA;)&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{97E7B7F5-B934-4D79-B4D1-1523DE9E9CDE}"
+          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C98F012D-CB78-4163-BF08-54B12FA246AC}"
+      DTS:From="Package\Tworzenie struktury Hurtowni danych"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Napełnianie hurtowni danymi" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="224,41.6"
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          TopLeft="36.6984197266249,16.7111128937965" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="288,113.6"
+          Size="288,156.8"
+          Id="Package\Napełnianie hurtowni danymi"
+          TopLeft="375.619054015802,67.5660140194833" />
+        <NodeLayout
+          Size="188,41.6"
+          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
+          TopLeft="53.2063503849264,14.9542500343015" />
+        <NodeLayout
+          Size="216.8,41.6"
+          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          TopLeft="40.507937470261,83.607845768384" />
+        <EdgeLayout
+          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint]"
+          TopLeft="148.057143927594,56.5542500343015">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.0535957340825"
+              Start="0,0"
+              End="0,19.5535957340825">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.5535957340825" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="304.8,207.2"
+          Size="304.8,250.4"
+          Id="Package\Tworzenie struktury Hurtowni danych"
+          TopLeft="16.0000002724784,61.1764714462122" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="320.800000272478,186.376471446212">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="54.8190537433234,-40.410457426729"
+              Start="0,0"
+              End="47.3190537433234,-40.410457426729">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="23.4095268716617,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="23.4095268716617,0"
+                    Point2="27.4095268716617,0"
+                    Point3="27.4095268716617,-4" />
+                  <mssgle:LineSegment
+                    End="27.4095268716617,-36.410457426729" />
+                  <mssgle:CubicBezierSegment
+                    Point1="27.4095268716617,-36.410457426729"
+                    Point2="27.4095268716617,-40.410457426729"
+                    Point3="31.4095268716617,-40.410457426729" />
+                  <mssgle:LineSegment
+                    End="47.3190537433234,-40.410457426729" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="145.6,41.6"
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych"
+          TopLeft="172.571431510303,31.2000004375682" />
+        <NodeLayout
+          Size="168,41.6"
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
+          TopLeft="159.428574143624,188.423532054334" />
+        <EdgeLayout
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
+          TopLeft="244.400002826963,72.8000004375682">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,115.623531616765"
+              Start="0,0"
+              End="0,108.123531616765">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,108.123531616765" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>

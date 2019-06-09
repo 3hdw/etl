@@ -11,8 +11,8 @@
   DTS:LocaleID="1045"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="32"
-  DTS:VersionGUID="{5D928C66-3BF3-4AF3-9F30-CEBE089DC3E1}">
+  DTS:VersionBuild="36"
+  DTS:VersionGUID="{2ED4B730-DA84-4F20-9BC3-63C875FE1A0F}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -500,42 +500,80 @@
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\Czyszczenie tabeli pomocniczej"
-      DTS:CreationName="Microsoft.ExecuteSQLTask"
-      DTS:Description="Execute SQL Task"
-      DTS:Disabled="True"
-      DTS:DTSID="{0B417F8E-6F04-47FE-930D-648A2154B6CF}"
-      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:refId="Package\Napełnianie faktów i sprzątanie"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{6455DFA2-B56C-4DD3-A38F-11B2ABFEAC84}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Czyszczenie tabeli pomocniczej"
-      DTS:ThreadHint="0">
+      DTS:ObjectName="Napełnianie faktów i sprzątanie">
       <DTS:Variables />
-      <DTS:ObjectData>
-        <SQLTask:SqlTaskData
-          SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
-          SQLTask:BypassPrepare="False"
-          SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;DELETE FROM Helper;&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-      </DTS:ObjectData>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Napełnianie faktów i sprzątanie\Czyszczenie tabeli pomocniczej"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{0B417F8E-6F04-47FE-930D-648A2154B6CF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Czyszczenie tabeli pomocniczej"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;DELETE FROM Helper;&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Napełnianie faktów i sprzątanie\Napełnianie tabeli faktu"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{12E29834-969D-49A5-9F83-53C194E77DC0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Napełnianie tabeli faktu"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO FactStop&#xA;(RawRowNumber, AgeId, DateId, GenderId, LocationId, OfficerId, RaceId, ReasonId, TimeId, Arrests, Citations, Warnings)&#xA;SELECT&#xA;&#x9;raw_row_number, &#xA;&#x9;subject_age,&#xA;&#x9;CONVERT(INT, CONVERT(VARCHAR(8),CONVERT(DATE,&quot;date&quot;),112)),&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN subject_sex = 'male' THEN 'Mężczyzna'&#xA;&#x9;&#x9;WHEN subject_sex = 'female' THEN 'Kobieta'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END,&#xA;&#x9;&quot;location&quot;,&#xA;&#x9;officer_id_hash,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;WHEN subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;WHEN subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;WHEN subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN reason_for_stop = 'Moving Violation' THEN 'Wykroczenie drogowe'&#xA;&#x9;&#x9;WHEN  reason_for_stop = 'Suspicion of DWI' THEN 'Podejrzenie o jazde pod wpływem'&#xA;&#x9;&#x9;WHEN reason_for_stop = 'Vehicle Equipment' THEN 'Stan pojazdu'&#xA;&#x9;&#x9;WHEN reason_for_stop = 'Investigatory Stop' THEN 'Kontrola'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END,&#xA;&#x9;DATEPART(HOUR, &quot;time&quot;),&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN outcome = 'arrest'THEN 1&#xA;&#x9;&#x9;ELSE 0&#xA;&#x9;END,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN outcome = 'citation' THEN 1&#xA;&#x9;&#x9;ELSE 0&#xA;&#x9;END,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN outcome = 'warning' THEN 1&#xA;&#x9;&#x9;ELSE 0&#xA;&#x9;END&#xA;FROM&#xA;&#x9;Helper h1&#xA;WHERE&#xA;&#x9;subject_age IS NOT NULL&#xA;&#x9;AND subject_age != 'NA'&#xA;&#x9;AND ISNUMERIC(subject_age) = 1&#xA;&#x9;AND &quot;date&quot; IS NOT NULL&#xA;&#x9;AND ISDATE(&quot;date&quot;) = 1&#xA;&#x9;AND ISNUMERIC(subject_sex) = 0&#xA;&#x9;AND &quot;location&quot; IS NOT NULL&#xA;&#x9;AND &quot;raw_row_number&quot; IS NOT NULL&#xA;&#x9;AND &quot;location&quot; NOT LIKE ''&#xA;&#x9;AND ISNUMERIC(&quot;raw_row_number&quot;) = 1&#xA;&#x9;AND ISNUMERIC(&quot;location&quot;) = 0&#xA;&#x9;AND officer_id_hash != 'NA'&#xA;&#x9;AND officer_id_hash IS NOT NULL&#xA;&#x9;AND department_name != 'NA'&#xA;&#x9;AND department_name IS NOT NULL&#xA;&#x9;AND subject_race IS NOT NULL&#xA;&#x9;AND ISNUMERIC(subject_race) = 0&#xA;&#x9;AND reason_for_stop IS NOT NULL&#xA;&#x9;AND ISNUMERIC(reason_for_stop) = 0&#xA;&#x9;AND &quot;time&quot; IS NOT NULL&#xA;&#x9;AND ISDATE(&quot;time&quot;) = 1&#xA;&#x9;AND NOT EXISTS (SELECT RawRowNumber FROM FactStop f1 WHERE f1.RawRowNumber=h1.raw_row_number)&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Napełnianie faktów i sprzątanie.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{41CAA43E-A01F-4469-9DE1-783C61252D31}"
+          DTS:From="Package\Napełnianie faktów i sprzątanie\Napełnianie tabeli faktu"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Napełnianie faktów i sprzątanie\Czyszczenie tabeli pomocniczej" />
+      </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Napełnianie hurtowni danymi"
+      DTS:refId="Package\Napełnianie wymiarów"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
       DTS:DTSID="{4E488CB7-7D23-462A-88C7-02959E5A8682}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Napełnianie hurtowni danymi">
+      DTS:ObjectName="Napełnianie wymiarów">
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie DimGender"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie DimGender"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{19E2A8A9-6A23-4F3A-A996-8F447C5B1B9D}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie DimGender"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -545,31 +583,31 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimAge"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimAge"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{F2371964-E0C5-4253-BDDC-3504BC4BA394}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimAge"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
               SQLTask:BypassPrepare="False"
-              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;INSERT INTO DimAge&#xA;(Id, AgeGroup)&#xA;SELECT DISTINCT &#xA;&#x9;subject_age,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN subject_age &lt;18 THEN '&lt;18'&#xA;&#x9;&#x9;WHEN subject_age &gt;=18 AND subject_age &lt; 26 THEN  '18-25'&#xA;&#x9;&#x9;WHEN subject_age &gt;= 26 AND subject_age &lt;36 THEN  '26-35'&#xA;&#x9;&#x9;WHEN subject_age &gt;= 36 AND subject_age &lt;46 THEN '36-45'&#xA;&#x9;&#x9;WHEN subject_age &gt;=46 AND subject_age &lt;56 THEN '46-55'&#xA;&#x9;&#x9;WHEN subject_age &gt;=56 AND subject_age &lt;66 THEN '56-65'&#xA;&#x9;&#x9;WHEN subject_age &gt;=66 THEN '66+'&#xA;&#x9;END&#xA;FROM &#xA;&#x9;Helper h1&#xA;WHERE &#xA;&#x9;subject_age IS NOT NULL&#xA;&#x9;AND subject_age != 'NA'&#xA;&#x9;AND NOT EXISTS (SELECT Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimAge t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE t1.Id = h1.subject_age);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;INSERT INTO DimAge&#xA;(Id, AgeGroup)&#xA;SELECT DISTINCT &#xA;&#x9;subject_age,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN subject_age &lt;18 THEN '&lt;18'&#xA;&#x9;&#x9;WHEN subject_age &gt;=18 AND subject_age &lt; 26 THEN  '18-25'&#xA;&#x9;&#x9;WHEN subject_age &gt;= 26 AND subject_age &lt;36 THEN  '26-35'&#xA;&#x9;&#x9;WHEN subject_age &gt;= 36 AND subject_age &lt;46 THEN '36-45'&#xA;&#x9;&#x9;WHEN subject_age &gt;=46 AND subject_age &lt;56 THEN '46-55'&#xA;&#x9;&#x9;WHEN subject_age &gt;=56 AND subject_age &lt;66 THEN '56-65'&#xA;&#x9;&#x9;WHEN subject_age &gt;=66 THEN '66+'&#xA;&#x9;END&#xA;FROM &#xA;&#x9;Helper h1&#xA;WHERE&#xA;&#x9;ISNUMERIC(subject_age) = 1&#xA;&#x9;AND subject_age IS NOT NULL&#xA;&#x9;AND subject_age != 'NA'&#xA;&#x9;AND NOT EXISTS (SELECT Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimAge t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE t1.Id = h1.subject_age);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimDate"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimDate"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{7CA86324-C09C-4711-ABB7-2A75AD7361E1}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimDate"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="6">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -579,7 +617,7 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimLocation"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimLocation"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{B27007EC-9E2B-448E-AE10-166EA7B35D17}"
@@ -596,14 +634,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimOfficer"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimOfficer"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{EE9B4D00-51F1-447E-93F2-3DA672523C55}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimOfficer"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -613,7 +651,7 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimRace"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimRace"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{C5B55BB5-3789-4F98-8202-342751993564}"
@@ -626,18 +664,18 @@
             <SQLTask:SqlTaskData
               SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
               SQLTask:BypassPrepare="False"
-              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO DimRace&#xA;(Race)&#xA;SELECT DISTINCT &#xA;&#x9;(CASE&#xA;&#x9;&#x9;WHEN subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;WHEN subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;WHEN subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;WHEN subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END)&#xA;FROM&#xA;&#x9;Helper h1&#xA;WHERE &#xA;&#x9;NOT EXISTS(SELECT Race&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimRace t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;(CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END) = t1.Race);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO DimRace&#xA;(Race)&#xA;SELECT DISTINCT &#xA;&#x9;(CASE&#xA;&#x9;&#x9;WHEN subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;WHEN subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;WHEN subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;WHEN subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END)&#xA;FROM&#xA;&#x9;Helper h1&#xA;WHERE&#xA;&#x9;subject_race IS NOT NULL&#xA;&#x9;AND ISNUMERIC(subject_race) = 0&#xA;&#x9;AND NOT EXISTS(SELECT Race&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimRace t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;(CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END) = t1.Race);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimReason"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimReason"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{25EBE808-383D-48EC-90FB-C4D962BD2A57}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimReason"
-          DTS:ThreadHint="5">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -647,24 +685,24 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimTime"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli DimTime"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{72E56712-C3F6-41F2-AF29-41451896A21B}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimTime"
-          DTS:ThreadHint="6">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
               SQLTask:BypassPrepare="False"
-              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO DimTime&#xA;(&quot;Hour&quot;,TimeOfTheDay)&#xA;SELECT DISTINCT &#xA;&#x9;DATEPART(HOUR, &quot;time&quot;),&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 0 AND DATEPART(HOUR, &quot;time&quot;) &lt;=3 THEN 'Noc'&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 4 AND DATEPART(HOUR, &quot;time&quot;) &lt;=11 THEN 'Rano'&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 12 AND DATEPART(HOUR, &quot;time&quot;) &lt;= 18 THEN 'Popołudnie'&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 19 THEN 'Wieczór'&#xA;&#x9;END&#xA;FROM Helper h1&#xA;WHERE &#xA;&#x9;ISDATE(h1.&quot;time&quot;) = 1&#xA;&#x9;AND NOT EXISTS(SElECT &quot;Hour&quot;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimTime t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE t1.&quot;Hour&quot; = DATEPART(HOUR, h1.&quot;time&quot;));&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO DimTime&#xA;(&quot;Hour&quot;,TimeOfTheDay)&#xA;SELECT DISTINCT &#xA;&#x9;DATEPART(HOUR, &quot;time&quot;),&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 0 AND DATEPART(HOUR, &quot;time&quot;) &lt;=3 THEN 'Noc'&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 4 AND DATEPART(HOUR, &quot;time&quot;) &lt;=11 THEN 'Rano'&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 12 AND DATEPART(HOUR, &quot;time&quot;) &lt;= 18 THEN 'Popołudnie'&#xA;&#x9;&#x9;WHEN DATEPART(HOUR, &quot;time&quot;) &gt;= 19 THEN 'Wieczór'&#xA;&#x9;END&#xA;FROM Helper h1&#xA;WHERE &#xA;&#x9;h1.&quot;time&quot; IS NOT NULL&#xA;&#x9;AND ISDATE(h1.&quot;time&quot;) = 1&#xA;&#x9;AND NOT EXISTS(SElECT &quot;Hour&quot;&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimTime t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE t1.&quot;Hour&quot; = DATEPART(HOUR, h1.&quot;time&quot;));&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:CreationName="Microsoft.Pipeline"
           DTS:Description="Data Flow Task"
           DTS:DTSID="{DB950B8A-8821-4EAD-BF10-4EB3EE670138}"
@@ -678,7 +716,7 @@
               version="1">
               <components>
                 <component
-                  refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
+                  refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
                   componentClassID="Microsoft.OLEDBDestination"
                   contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
                   description="OLE DB Destination"
@@ -735,7 +773,7 @@
                   </properties>
                   <connections>
                     <connection
-                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Connections[OleDbConnection]"
+                      refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Connections[OleDbConnection]"
                       connectionManagerID="Package.ConnectionManagers[LocalHost.Projekt2019]"
                       connectionManagerRefId="Package.ConnectionManagers[LocalHost.Projekt2019]"
                       description="The OLE DB runtime connection used to access the database."
@@ -743,229 +781,229 @@
                   </connections>
                   <inputs>
                     <input
-                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]"
+                      refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]"
                       errorOrTruncationOperation="Insert"
                       errorRowDisposition="FailComponent"
                       hasSideEffects="true"
                       name="OLE DB Destination Input">
                       <inputColumns>
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[raw_row_number]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[raw_row_number]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="50"
                           cachedName="raw_row_number"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[raw_row_number]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[raw_row_number]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[date]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[date]"
                           cachedDataType="date"
                           cachedName="date"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[date]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[date]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[time]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[time]"
                           cachedDataType="date"
                           cachedName="time"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[time]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[time]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[location]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[location]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="location"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[location]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[location]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_age]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_age]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="subject_age"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_age]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_age]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_race]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_race]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="subject_race"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_race]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_race]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_sex]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[subject_sex]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="subject_sex"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_sex]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_sex]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[officer_id_hash]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[officer_id_hash]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="officer_id_hash"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[officer_id_hash]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[officer_id_hash]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[department_name]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[department_name]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="department_name"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[department_name]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[department_name]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[type]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[type]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="type"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[type]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[type]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[outcome]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[outcome]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="outcome"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[outcome]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[outcome]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[contraband_found]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[contraband_found]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="contraband_found"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[contraband_found]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[contraband_found]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[search_conducted]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[search_conducted]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="search_conducted"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_conducted]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_conducted]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[search_basis]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[search_basis]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="search_basis"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_basis]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_basis]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[reason_for_search]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[reason_for_search]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="reason_for_search"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_search]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_search]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]" />
                         <inputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[reason_for_stop]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].Columns[reason_for_stop]"
                           cachedCodepage="1252"
                           cachedDataType="str"
                           cachedLength="100"
                           cachedName="reason_for_stop"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_stop]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]" />
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_stop]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[raw_row_number]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[raw_row_number]"
                           dataType="i4"
                           name="raw_row_number" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[date]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[date]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="date" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[time]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[time]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="time" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[location]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[location]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="location" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_age]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_age]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="subject_age" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_race]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_race]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="subject_race" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_sex]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[subject_sex]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="subject_sex" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[officer_id_hash]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[officer_id_hash]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="officer_id_hash" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[department_name]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[department_name]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="department_name" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[type]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[type]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="type" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[outcome]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[outcome]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="outcome" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[contraband_found]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[contraband_found]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="contraband_found" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_conducted]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_conducted]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="search_conducted" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_basis]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[search_basis]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="search_basis" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_search]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_search]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="reason_for_search" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_stop]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input].ExternalColumns[reason_for_stop]"
                           codePage="1252"
                           dataType="str"
                           length="100"
@@ -975,22 +1013,22 @@
                   </inputs>
                   <outputs>
                     <output
-                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output]"
+                      refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output]"
                       exclusionGroup="1"
                       isErrorOut="true"
                       name="OLE DB Destination Error Output"
-                      synchronousInputId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]">
+                      synchronousInputId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                           dataType="i4"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                           name="ErrorCode"
                           specialFlags="1" />
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                           dataType="i4"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                           name="ErrorColumn"
                           specialFlags="2" />
                       </outputColumns>
@@ -999,7 +1037,7 @@
                   </outputs>
                 </component>
                 <component
-                  refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych"
+                  refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych"
                   componentClassID="Microsoft.FlatFileSource"
                   contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
                   description="Flat File Source"
@@ -1019,25 +1057,25 @@
                   </properties>
                   <connections>
                     <connection
-                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Connections[FlatFileConnection]"
+                      refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Connections[FlatFileConnection]"
                       connectionManagerID="Package.ConnectionManagers[Połączenie do pliku z danymi do projektu]"
                       connectionManagerRefId="Package.ConnectionManagers[Połączenie do pliku z danymi do projektu]"
                       name="FlatFileConnection" />
                   </connections>
                   <outputs>
                     <output
-                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output]"
+                      refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output]"
                       name="Flat File Source Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[raw_row_number]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[raw_row_number]"
                           length="50"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[raw_row_number]"
                           name="raw_row_number"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1052,12 +1090,12 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]"
                           dataType="date"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[date]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[date]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[date]"
                           name="date"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1072,12 +1110,12 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]"
                           dataType="date"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[time]"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[time]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[time]"
                           name="time"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1092,14 +1130,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[location]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[location]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[location]"
                           name="location"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1114,14 +1152,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_age]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_age]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_age]"
                           name="subject_age"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1136,14 +1174,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_race]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_race]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_race]"
                           name="subject_race"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1158,14 +1196,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_sex]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_sex]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[subject_sex]"
                           name="subject_sex"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1180,14 +1218,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[officer_id_hash]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[officer_id_hash]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[officer_id_hash]"
                           name="officer_id_hash"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1202,14 +1240,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[department_name]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[department_name]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[department_name]"
                           name="department_name"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1224,14 +1262,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[type]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[type]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[type]"
                           name="type"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1246,14 +1284,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[outcome]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[outcome]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[outcome]"
                           name="outcome"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1268,14 +1306,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[contraband_found]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[contraband_found]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[contraband_found]"
                           name="contraband_found"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1290,14 +1328,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_conducted]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_conducted]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_conducted]"
                           name="search_conducted"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1312,14 +1350,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_basis]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_basis]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[search_basis]"
                           name="search_basis"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1334,14 +1372,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_search]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_search]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_search]"
                           name="reason_for_search"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1356,14 +1394,14 @@
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_stop]"
+                          externalMetadataColumnId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_stop]"
                           length="100"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].Columns[reason_for_stop]"
                           name="reason_for_stop"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -1381,123 +1419,123 @@
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[raw_row_number]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[raw_row_number]"
                           codePage="1252"
                           dataType="str"
                           length="50"
                           name="raw_row_number" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[date]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[date]"
                           dataType="date"
                           name="date" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[time]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[time]"
                           dataType="date"
                           name="time" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[location]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[location]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="location" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[lat]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[lat]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="lat" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[lng]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[lng]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="lng" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_age]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_age]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="subject_age" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_race]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_race]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="subject_race" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_sex]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[subject_sex]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="subject_sex" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[officer_id_hash]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[officer_id_hash]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="officer_id_hash" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[department_name]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[department_name]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="department_name" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[type]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[type]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="type" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[arrest_made]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[arrest_made]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="arrest_made" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[citation_issued]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[citation_issued]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="citation_issued" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[warning_issued]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[warning_issued]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="warning_issued" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[outcome]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[outcome]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="outcome" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[contraband_found]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[contraband_found]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="contraband_found" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_conducted]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_conducted]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="search_conducted" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_basis]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[search_basis]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="search_basis" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_search]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_search]"
                           codePage="1252"
                           dataType="str"
                           length="100"
                           name="reason_for_search" />
                         <externalMetadataColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_stop]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output].ExternalColumns[reason_for_stop]"
                           codePage="1252"
                           dataType="str"
                           length="100"
@@ -1505,27 +1543,27 @@
                       </externalMetadataColumns>
                     </output>
                     <output
-                      refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output]"
+                      refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output]"
                       isErrorOut="true"
                       name="Flat File Source Error Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
                           codePage="1252"
                           dataType="text"
                           description="Flat File Source Error Output Column"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
                           name="Flat File Source Error Output Column" />
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
                           dataType="i4"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
                           name="ErrorCode"
                           specialFlags="1" />
                         <outputColumn
-                          refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
                           dataType="i4"
-                          lineageId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          lineageId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
                           name="ErrorColumn"
                           specialFlags="2" />
                       </outputColumns>
@@ -1536,10 +1574,10 @@
               </components>
               <paths>
                 <path
-                  refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
-                  endId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]"
+                  refId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
+                  endId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza.Inputs[OLE DB Destination Input]"
                   name="Flat File Source Output"
-                  startId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output]" />
+                  startId="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych.Outputs[Flat File Source Output]" />
               </paths>
             </pipeline>
           </DTS:ObjectData>
@@ -1547,83 +1585,83 @@
       </DTS:Executables>
       <DTS:PrecedenceConstraints>
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
           DTS:DTSID="{78754C64-F7F1-491C-8799-EFB1F1A91142}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimDate" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimDate" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 1]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
           DTS:DTSID="{AB183463-9221-4FB7-A11D-9908570DB64C}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 1"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimTime" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimTime" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 2]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 2]"
           DTS:CreationName=""
           DTS:DTSID="{CF2AF196-CE06-4378-A106-1A98897948CC}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 2"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimReason" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimReason" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 3]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 3]"
           DTS:CreationName=""
           DTS:DTSID="{9DA48E04-F3AC-4F3A-A57A-AABED4027352}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 3"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimOfficer" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimOfficer" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 4]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 4]"
           DTS:CreationName=""
           DTS:DTSID="{750F2797-79D4-4809-A5C9-A5DF19EEE362}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 4"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimAge" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimAge" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 5]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 5]"
           DTS:CreationName=""
           DTS:DTSID="{E4170216-0150-464F-893C-AB533D3A3C88}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 5"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimRace" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimRace" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 6]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 6]"
           DTS:CreationName=""
           DTS:DTSID="{119668A7-1F60-405F-A54A-9043A0BAA7F6}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 6"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie DimGender" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie DimGender" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 7]"
+          DTS:refId="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 7]"
           DTS:CreationName=""
           DTS:DTSID="{91CA86AA-9252-4365-9320-581BF43FEE0D}"
-          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:From="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 7"
-          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimLocation" />
+          DTS:To="Package\Napełnianie wymiarów\Napełnianie tabeli DimLocation" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Tworzenie struktury Hurtowni danych"
+      DTS:refId="Package\Tworzenie struktury wymiarów"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
       DTS:DTSID="{63000DA8-3CAE-482F-B0E7-BA1450A9781F}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Tworzenie struktury Hurtowni danych">
+      DTS:ObjectName="Tworzenie struktury wymiarów">
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie bazy danych"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{9C8716D5-E128-42E8-A8F7-D115281BA20C}"
@@ -1640,14 +1678,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimAge"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimAge"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{6BDEE4B6-D200-4D80-9F91-23DC2CBA7A1C}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimAge"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1657,14 +1695,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimDate"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimDate"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{CAA92BCB-AEA5-42D3-A628-73CE3FF3D37D}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimDate"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1674,14 +1712,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimGender"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimGender"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{A8859A98-EF0D-4E7F-BAB4-B09AAE819476}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimGender"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1691,14 +1729,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimLocation"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimLocation"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{5C7276CD-1276-4F59-B670-12E767AB3F53}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimLocation"
-          DTS:ThreadHint="7">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1708,14 +1746,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimOfficer"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimOfficer"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{8667CFBF-EE15-4F25-BCAE-CD8E1BEFFA5A}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimOfficer"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="6">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1725,14 +1763,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimRace"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimRace"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{99438658-75D5-492C-B793-805CF68C8F53}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimRace"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="7">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1742,14 +1780,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimReason"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimReason"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{6C3DCD19-1E65-45BB-8558-E1F5F9C0F700}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimReason"
-          DTS:ThreadHint="5">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1759,14 +1797,14 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimTime"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimTime"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{F0FCFACF-CBFB-4BD7-B93E-A6EF7D2CC7F4}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Tworzenie tabeli DimTime"
-          DTS:ThreadHint="6">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1776,7 +1814,7 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:refId="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
           DTS:DTSID="{06F14B5C-AD0F-4BDE-9ECA-A6CEF23DFF03}"
@@ -1795,97 +1833,122 @@
       </DTS:Executables>
       <DTS:PrecedenceConstraints>
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
           DTS:DTSID="{97E7B7F5-B934-4D79-B4D1-1523DE9E9CDE}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie bazy danych"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 1]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
           DTS:DTSID="{646761F3-D0DA-4A94-9442-47FD7E02A691}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 1"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimDate" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimDate" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 2]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 2]"
           DTS:CreationName=""
           DTS:DTSID="{9187DD47-7FF1-4660-B34B-89310BAF124A}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 2"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimTime" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimTime" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 3]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 3]"
           DTS:CreationName=""
           DTS:DTSID="{67B09F83-12B5-4868-8582-ECA5E04EF4EF}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 3"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimReason" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimReason" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 4]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 4]"
           DTS:CreationName=""
           DTS:DTSID="{7082C3D8-AF66-4557-B27F-DAF4674E724F}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 4"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimOfficer" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimOfficer" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 5]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 5]"
           DTS:CreationName=""
           DTS:DTSID="{3E923AEB-4A4B-46BC-9753-99653738488C}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 5"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimAge" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimAge" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 6]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 6]"
           DTS:CreationName=""
           DTS:DTSID="{5D9AD146-CA3A-4337-A667-6866456A2ACD}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 6"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimRace" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimRace" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 7]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 7]"
           DTS:CreationName=""
           DTS:DTSID="{91945ECB-9B93-4C36-9FC8-AAB1A761B1E3}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 7"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimGender" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimGender" />
         <DTS:PrecedenceConstraint
-          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 8]"
+          DTS:refId="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 8]"
           DTS:CreationName=""
           DTS:DTSID="{9ED3FD9F-643C-4174-9FFD-A18DAA329BD3}"
-          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:From="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 8"
-          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimLocation" />
+          DTS:To="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimLocation" />
       </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Tworzenie tabeli Faktu"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{F5B2B7F2-3B47-4EBB-A6DE-1A8D00E487AC}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Tworzenie tabeli Faktu"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+          SQLTask:BypassPrepare="False"
+          SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;CREATE TABLE FactStop&#xA;(&#xA;&#x9;RawRowNumber INT NOT NULL,&#xA;&#x9;AgeId INT NOT NULL,&#xA;&#x9;DateId INT NOT NULL,&#xA;&#x9;GenderId VARCHAR(20) NOT NULL,&#xA;&#x9;LocationId VARCHAR(150) NOT NULL,&#xA;&#x9;OfficerId VARCHAR(50) NOT NULL,&#xA;&#x9;RaceId VARCHAR(50) NOT NULL,&#xA;&#x9;ReasonId VARCHAR(150) NOT NULL,&#xA;&#x9;TimeId INT NOT NULL,&#xA;&#x9;Arrests INT NOT NULL,&#xA;&#x9;Citations INT NOT NULL,&#xA;&#x9;Warnings INT NOT NULL&#xA;&#x9;CONSTRAINT PK_FactStop PRIMARY KEY (RawRowNumber),&#xA;&#x9;CONSTRAINT FK_DimAge_FactStop FOREIGN KEY (AgeId) REFERENCES DimAge(Id),&#xA;&#x9;CONSTRAINT FK_DimDate_FactStop FOREIGN KEY (DateId) REFERENCES DimDate(Id),&#xA;&#x9;CONSTRAINT FK_DImGender_FactStop FOREIGN KEY (GenderId) REFERENCES DimGender(Gender),&#xA;&#x9;CONSTRAINT FK_DimLocation_FactStop FOREIGN KEY (LocationId) REFERENCES DimLocation(&quot;Location&quot;),&#xA;&#x9;CONSTRAINT FK_DimOfficer_FactStop FOREIGN KEY (OfficerId) REFERENCES DimOfficer(Id),&#xA;&#x9;CONSTRAINT FK_DimRace_FactStop FOREIGN KEY (RaceId) REFERENCES DimRace(Race),&#xA;&#x9;CONSTRAINT FK_DimReason_FactStop FOREIGN KEY (ReasonId) REFERENCES DimReason(StopReason),&#xA;&#x9;CONSTRAINT FK_DimTime_FactStop FOREIGN KEY (TimeId) REFERENCES DimTime(Hour)&#xA;);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{C98F012D-CB78-4163-BF08-54B12FA246AC}"
-      DTS:From="Package\Tworzenie struktury Hurtowni danych"
+      DTS:DTSID="{463186CA-F11E-4BE9-B91D-9510FAA2E8B0}"
+      DTS:From="Package\Tworzenie tabeli Faktu"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Napełnianie hurtowni danymi" />
+      DTS:To="Package\Napełnianie wymiarów" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{EA34721E-D4BE-4599-8F4A-B9DD2AAF8FB0}"
-      DTS:From="Package\Napełnianie hurtowni danymi"
+      DTS:DTSID="{C05756DB-B31C-4302-B887-A9B6261815FE}"
+      DTS:From="Package\Napełnianie wymiarów"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\Czyszczenie tabeli pomocniczej" />
+      DTS:To="Package\Napełnianie faktów i sprzątanie" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{1E6FF3FE-0571-4E88-9511-8BF7F3CF2D23}"
+      DTS:From="Package\Tworzenie struktury wymiarów"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Tworzenie tabeli Faktu" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -1900,67 +1963,67 @@
       <GraphLayout
         Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="162.4,50.4"
-          Id="Package\Czyszczenie tabeli pomocniczej"
-          TopLeft="898.285728595692,547.223537086368" />
-        <NodeLayout
           Size="189.6,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie DimGender"
-          TopLeft="697.044911888946,74.393279431353" />
+          Id="Package\Napełnianie wymiarów\Napełnianie DimGender"
+          TopLeft="697.044911888946,73.3736715739161" />
         <NodeLayout
           Size="202.4,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimAge"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimAge"
           TopLeft="492.832666323693,172.813448846829" />
         <NodeLayout
           Size="206.4,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimDate"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimDate"
           TopLeft="5.5,69.409152545621" />
         <NodeLayout
+          Size="224,41.6"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimLocation"
+          TopLeft="8.34286050018045,6.96470716931834" />
+        <NodeLayout
           Size="162.4,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimOfficer"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimOfficer"
           TopLeft="374.628585247119,113.003924342753" />
         <NodeLayout
           Size="207.2,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimRace"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimRace"
           TopLeft="587.706136309232,124.947902101299" />
         <NodeLayout
           Size="218.4,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimReason"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimReason"
           TopLeft="257.6285798827,171.317650608703" />
         <NodeLayout
           Size="208.8,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimTime"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli DimTime"
           TopLeft="119.342862032871,121.494120049394" />
         <NodeLayout
           Size="224,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej"
           TopLeft="279.873027042467,2.43660288968029" />
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint]"
-          TopLeft="355.873027042467,44.0366028896803">
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint]"
+          TopLeft="310.873027042467,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-247.173027042467,25.3725496559407"
+              EndConnector="-202.173027042467,25.3725496559407"
               Start="0,0"
-              End="-247.173027042467,17.8725496559407">
+              End="-202.173027042467,17.8725496559407">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,6.25698815878454" />
+                    End="0,1.50034293240673" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,6.25698815878454"
-                    Point2="0,10.2569881587845"
-                    Point3="-4,10.2569881587845" />
+                    Point1="0,1.50034293240673"
+                    Point2="0,5.50034293240673"
+                    Point3="-4,5.50034293240673" />
                   <mssgle:LineSegment
-                    End="-243.173027042467,10.2569881587845" />
+                    End="-198.173027042467,5.50034293240673" />
                   <mssgle:CubicBezierSegment
-                    Point1="-243.173027042467,10.2569881587845"
-                    Point2="-247.173027042467,10.2569881587845"
-                    Point3="-247.173027042467,14.2569881587845" />
+                    Point1="-198.173027042467,5.50034293240673"
+                    Point2="-202.173027042467,5.50034293240673"
+                    Point3="-202.173027042467,9.50034293240672" />
                   <mssgle:LineSegment
-                    End="-247.173027042467,17.8725496559407" />
+                    End="-202.173027042467,17.8725496559407" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1970,7 +2033,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 1]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 1]"
           TopLeft="427.873027042467,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2004,7 +2067,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 2]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 2]"
           TopLeft="445.873027042467,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2038,7 +2101,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 3]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 3]"
           TopLeft="456.250806144793,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2060,7 +2123,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 4]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 4]"
           TopLeft="463.873027042467,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2094,7 +2157,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 5]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 5]"
           TopLeft="469.015884185324,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2128,31 +2191,31 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 6]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 6]"
           TopLeft="472.873027042467,44.0366028896803">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="305.371884846479,30.3566765416727"
+              EndConnector="318.971884846479,29.3370686842358"
               Start="0,0"
-              End="305.371884846479,22.8566765416727">
+              End="318.971884846479,21.8370686842358">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,2.58081799155143" />
+                    End="0,2.35978412035882" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,2.58081799155143"
-                    Point2="0,6.58081799155143"
-                    Point3="4,6.58081799155143" />
+                    Point1="0,2.35978412035882"
+                    Point2="0,6.35978412035882"
+                    Point3="4,6.35978412035882" />
                   <mssgle:LineSegment
-                    End="301.371884846479,6.58081799155143" />
+                    End="314.971884846479,6.35978412035882" />
                   <mssgle:CubicBezierSegment
-                    Point1="301.371884846479,6.58081799155143"
-                    Point2="305.371884846479,6.58081799155143"
-                    Point3="305.371884846479,10.5808179915514" />
+                    Point1="314.971884846479,6.35978412035882"
+                    Point2="318.971884846479,6.35978412035882"
+                    Point3="318.971884846479,10.3597841203588" />
                   <mssgle:LineSegment
-                    End="305.371884846479,22.8566765416727" />
+                    End="318.971884846479,21.8370686842358" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2161,12 +2224,8 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="224,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimLocation"
-          TopLeft="8.34286050018045,6.96470716931834" />
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 7]"
+          Id="Package\Napełnianie wymiarów.PrecedenceConstraints[Constraint 7]"
           TopLeft="279.873027042467,25.5006550294993">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2192,46 +2251,50 @@
           IsExpanded="True"
           PanelSize="939.2,407.2"
           Size="939.2,450.4"
-          Id="Package\Napełnianie hurtowni danymi"
-          TopLeft="864.80046625484,41.4082172007159" />
+          Id="Package\Napełnianie wymiarów"
+          TopLeft="868.514751044646,45.8788046852803" />
         <NodeLayout
           Size="188,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie bazy danych"
           TopLeft="53.2063503849264,14.9542500343015" />
         <NodeLayout
           Size="195.2,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimAge"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimAge"
           TopLeft="376.800005585807,203.247062650106" />
         <NodeLayout
           Size="144.8,46.4"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimDate"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimDate"
           TopLeft="6.52336012559465,307.515971742782" />
         <NodeLayout
           Size="162.4,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimGender"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimGender"
           TopLeft="560.832662625772,98.1848761680629" />
         <NodeLayout
+          Size="216.8,41.6"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimLocation"
+          TopLeft="540.152390164746,28.8627464565027" />
+        <NodeLayout
           Size="162.4,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimOfficer"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimOfficer"
           TopLeft="276.609529323967,256.360788012559" />
         <NodeLayout
           Size="162.4,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimRace"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimRace"
           TopLeft="469.534702677491,152.383196390542" />
         <NodeLayout
           Size="166.4,46.4"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimReason"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimReason"
           TopLeft="187.72063892131,310.060135170901" />
         <NodeLayout
           Size="148,51.2"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimTime"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli DimTime"
           TopLeft="100.387303601155,367.918960371937" />
         <NodeLayout
           Size="216.8,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          Id="Package\Tworzenie struktury wymiarów\Tworzenie tabeli Pomocniczej"
           TopLeft="40.507937470261,83.607845768384" />
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint]"
           TopLeft="148.057143927594,56.5542500343015">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2253,7 +2316,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 1]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 1]"
           TopLeft="82.5956487979278,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2275,7 +2338,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 2]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 2]"
           TopLeft="128.027937470261,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2309,7 +2372,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 3]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 3]"
           TopLeft="169.787937470261,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2343,7 +2406,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 4]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 4]"
           TopLeft="211.547937470261,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2377,7 +2440,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 5]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 5]"
           TopLeft="218.507937470261,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2411,7 +2474,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 6]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 6]"
           TopLeft="223.47936604169,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2445,7 +2508,7 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 7]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 7]"
           TopLeft="257.307937470261,104.407845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2478,12 +2541,8 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="216.8,41.6"
-          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimLocation"
-          TopLeft="540.152390164746,28.8627464565027" />
         <EdgeLayout
-          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 8]"
+          Id="Package\Tworzenie struktury wymiarów.PrecedenceConstraints[Constraint 8]"
           TopLeft="257.307937470261,98.807845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2521,34 +2580,109 @@
           IsExpanded="True"
           PanelSize="767.2,474.4"
           Size="767.2,517.6"
-          Id="Package\Tworzenie struktury Hurtowni danych"
+          Id="Package\Tworzenie struktury wymiarów"
           TopLeft="46.4195019243064,24.4341740121478" />
+        <NodeLayout
+          Size="224,41.6"
+          Id="Package\Napełnianie faktów i sprzątanie\Czyszczenie tabeli pomocniczej"
+          TopLeft="26.6285878016004,138.864707752743" />
+        <NodeLayout
+          Size="162.4,41.6"
+          Id="Package\Napełnianie faktów i sprzątanie\Napełnianie tabeli faktu"
+          TopLeft="59.3142972556914,33.9764784473036" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="813.619501924306,283.234174012148">
+          Id="Package\Napełnianie faktów i sprzątanie.PrecedenceConstraints[Constraint]"
+          TopLeft="139.571442528646,75.5764784473036">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="51.1809643305338,-16.6259568114319"
+              EndConnector="0,63.288229305439"
               Start="0,0"
-              End="43.6809643305338,-16.6259568114319">
+              End="0,55.788229305439">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="21.5904821652669,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="21.5904821652669,0"
-                    Point2="25.5904821652669,0"
-                    Point3="25.5904821652669,-4" />
+                    End="0,55.788229305439" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="274.4,245.6"
+          Size="274.4,288.8"
+          Id="Package\Napełnianie faktów i sprzątanie"
+          TopLeft="1097.14286819769,574.023537305153" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="1338.11475104465,496.27880468528">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-103.771882846951,77.7447326198723"
+              Start="0,0"
+              End="-103.771882846951,70.2447326198723">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
                   <mssgle:LineSegment
-                    End="25.5904821652669,-12.6259568114319" />
+                    End="0,34.8723663099362" />
                   <mssgle:CubicBezierSegment
-                    Point1="25.5904821652669,-12.6259568114319"
-                    Point2="25.5904821652669,-16.6259568114319"
-                    Point3="29.5904821652669,-16.6259568114319" />
+                    Point1="0,34.8723663099362"
+                    Point2="0,38.8723663099362"
+                    Point3="-4,38.8723663099362" />
                   <mssgle:LineSegment
-                    End="43.6809643305338,-16.6259568114319" />
+                    End="-99.7718828469508,38.8723663099362" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-99.7718828469508,38.8723663099362"
+                    Point2="-103.771882846951,38.8723663099362"
+                    Point3="-103.771882846951,42.8723663099362" />
+                  <mssgle:LineSegment
+                    End="-103.771882846951,70.2447326198723" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="184.8,41.6"
+          Id="Package\Tworzenie tabeli Faktu"
+          TopLeft="741.904773091784,619.245105693085" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="430.019501924306,542.034174012148">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="374.81860450081,77.2109316809367"
+              Start="0,0"
+              End="374.81860450081,69.7109316809367">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,41.9289061415358" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,41.9289061415358"
+                    Point2="0,45.9289061415358"
+                    Point3="4,45.9289061415358" />
+                  <mssgle:LineSegment
+                    End="370.81860450081,45.9289061415358" />
+                  <mssgle:CubicBezierSegment
+                    Point1="370.81860450081,45.9289061415358"
+                    Point2="374.81860450081,45.9289061415358"
+                    Point3="374.81860450081,49.9289061415358" />
+                  <mssgle:LineSegment
+                    End="374.81860450081,69.7109316809367" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2558,31 +2692,31 @@
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="1334.40046625484,491.808217200716">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="863.77143975845,619.245105693085">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-354.914737659148,55.4153198856521"
+              EndConnector="319.143311286196,-122.966301007804"
               Start="0,0"
-              End="-354.914737659148,47.9153198856521">
+              End="319.143311286196,-115.466301007804">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.707659942826" />
+                    End="0,-58.0107919223358" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.707659942826"
-                    Point2="0,27.707659942826"
-                    Point3="-4,27.707659942826" />
+                    Point1="0,-58.0107919223358"
+                    Point2="0,-62.0107919223358"
+                    Point3="4,-62.0107919223358" />
                   <mssgle:LineSegment
-                    End="-350.914737659148,27.707659942826" />
+                    End="315.143311286196,-62.0107919223358" />
                   <mssgle:CubicBezierSegment
-                    Point1="-350.914737659148,27.707659942826"
-                    Point2="-354.914737659148,27.707659942826"
-                    Point3="-354.914737659148,31.707659942826" />
+                    Point1="315.143311286196,-62.0107919223358"
+                    Point2="319.143311286196,-62.0107919223358"
+                    Point3="319.143311286196,-66.0107919223358" />
                   <mssgle:LineSegment
-                    End="-354.914737659148,47.9153198856521" />
+                    End="319.143311286196,-115.466301007804" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2595,20 +2729,20 @@
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej">
+    design-time-name="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="145.6,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Żródło danych"
           TopLeft="172.571431510303,31.2000004375682" />
         <NodeLayout
           Size="168,41.6"
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
           TopLeft="163.238098018024,181.558172480925" />
         <EdgeLayout
-          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
+          Id="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
           TopLeft="246.304764764164,72.8000004375682">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -2626,14 +2760,16 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza">
+    design-time-name="Package\Napełnianie wymiarów\Napełnianie tabeli Pomocniczej\Tabela pomocnicza">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

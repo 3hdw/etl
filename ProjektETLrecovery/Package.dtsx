@@ -11,8 +11,8 @@
   DTS:LocaleID="1045"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="10"
-  DTS:VersionGUID="{FB0107A2-724E-48BA-8109-7C28CA8BEC4E}">
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{333FB8DC-FF1C-4105-9796-AAC38A121B3E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -257,6 +257,40 @@
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
+          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie DimGender"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{19E2A8A9-6A23-4F3A-A996-8F447C5B1B9D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Napełnianie DimGender"
+          DTS:ThreadHint="6">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO DimGender&#xA;(Gender)&#xA;SELECT DISTINCT &#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN subject_sex = 'male' THEN 'Mężczyzna'&#xA;&#x9;&#x9;WHEN subject_sex = 'female' THEN 'Kobieta'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END&#xA;FROM &#xA;&#x9;Helper h1&#xA;WHERE &#xA;&#x9;NOT EXISTS(SELECT &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;Gender&#xA;&#x9;&#x9;&#x9;&#x9;FROM &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;DimGender t1&#xA;&#x9;&#x9;&#x9;&#x9;WHERE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;(CASE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_sex = 'male' THEN 'Mężczyzna'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_sex = 'female' THEN 'Kobieta'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;END) = t1.Gender);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimAge"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{F2371964-E0C5-4253-BDDC-3504BC4BA394}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Napełnianie tabeli DimAge"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;INSERT INTO DimAge&#xA;(Id, AgeGroup)&#xA;SELECT DISTINCT &#xA;&#x9;subject_age,&#xA;&#x9;CASE&#xA;&#x9;&#x9;WHEN subject_age &lt;18 THEN '&lt;18'&#xA;&#x9;&#x9;WHEN subject_age &gt;=18 AND subject_age &lt; 26 THEN  '18-25'&#xA;&#x9;&#x9;WHEN subject_age &gt;= 26 AND subject_age &lt;36 THEN  '26-35'&#xA;&#x9;&#x9;WHEN subject_age &gt;= 36 AND subject_age &lt;46 THEN '36-45'&#xA;&#x9;&#x9;WHEN subject_age &gt;=46 AND subject_age &lt;56 THEN '46-55'&#xA;&#x9;&#x9;WHEN subject_age &gt;=56 AND subject_age &lt;66 THEN '56-65'&#xA;&#x9;&#x9;WHEN subject_age &gt;=66 THEN '66+'&#xA;&#x9;END&#xA;FROM &#xA;&#x9;Helper h1&#xA;WHERE &#xA;&#x9;subject_age IS NOT NULL&#xA;&#x9;AND subject_age != 'NA'&#xA;&#x9;AND NOT EXISTS (SELECT Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimAge t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE t1.Id = h1.subject_age);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimDate"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
@@ -264,7 +298,7 @@
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimDate"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -281,13 +315,30 @@
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimOfficer"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
               SQLTask:BypassPrepare="False"
               SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;WITH cte AS&#xA;(   SELECT &#xA;&#x9;&#x9;officer_id_hash,&#xA;&#x9;&#x9;department_name,&#xA;&#x9;&#x9;ROW_NUMBER() OVER (PARTITION BY officer_id_hash ORDER BY department_name DESC) AS rn&#xA;    FROM Helper&#xA;&#x9;WHERE &#xA;&#x9;&#x9;officer_id_hash != 'NA'&#xA;&#x9;&#x9;AND &#xA;&#x9;&#x9;officer_id_hash IS NOT NULL&#xA;&#x9;&#x9;AND&#xA;&#x9;&#x9;department_name != 'NA'&#xA;&#x9;&#x9;AND&#xA;&#x9;&#x9;department_name IS NOT NULL&#xA;)&#xA;INSERT INTO DimOfficer&#xA;(Id,DepartmentName)&#xA;SELECT &#xA;&#x9;officer_id_hash,&#xA;&#x9;department_name&#xA;FROM &#xA;&#x9;cte c1&#xA;WHERE &#xA;&#x9;rn = 1&#xA;&#x9;AND&#xA;&#x9;NOT EXISTS(SELECT Id&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimOfficer t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE t1.Id = c1.officer_id_hash);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimRace"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{C5B55BB5-3789-4F98-8202-342751993564}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Napełnianie tabeli DimRace"
+          DTS:ThreadHint="5">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;INSERT INTO DimRace&#xA;(Race)&#xA;SELECT DISTINCT &#xA;&#x9;(CASE&#xA;&#x9;&#x9;WHEN subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;WHEN subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;WHEN subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;WHEN subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;END)&#xA;FROM&#xA;&#x9;Helper h1&#xA;WHERE &#xA;&#x9;NOT EXISTS(SELECT Race&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;FROM DimRace t1&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHERE &#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;(CASE&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'asian/pacific islander' THEN 'Azjatci'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'black' THEN 'Czarni'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'white' THEN 'Biali'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;WHEN h1.subject_race = 'hispanic' THEN 'Hiszpanie'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;ELSE 'Inne'&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;END) = t1.Race);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -298,7 +349,7 @@
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimReason"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -315,7 +366,7 @@
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Napełnianie tabeli DimTime"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1237,12 +1288,37 @@
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 3"
           DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimOfficer" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{750F2797-79D4-4809-A5C9-A5DF19EEE362}"
+          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimAge" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{E4170216-0150-464F-893C-AB533D3A3C88}"
+          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimRace" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 6]"
+          DTS:CreationName=""
+          DTS:DTSID="{119668A7-1F60-405F-A54A-9043A0BAA7F6}"
+          DTS:From="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 6"
+          DTS:To="Package\Napełnianie hurtowni danymi\Napełnianie DimGender" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Tworzenie struktury Hurtowni danych"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
+      DTS:Disabled="True"
       DTS:DTSID="{63000DA8-3CAE-482F-B0E7-BA1450A9781F}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
@@ -1267,6 +1343,23 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimAge"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{6BDEE4B6-D200-4D80-9F91-23DC2CBA7A1C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Tworzenie tabeli DimAge"
+          DTS:ThreadHint="6">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;CREATE TABLE DimAge&#xA;(&#xA;&#x9;Id INT NOT NULL,&#xA;&#x9;AgeGroup VARCHAR(15)&#xA;&#x9;CONSTRAINT PK_DimAge PRIMARY KEY (Id)&#xA;)&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimDate"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
@@ -1284,6 +1377,23 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimGender"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{A8859A98-EF0D-4E7F-BAB4-B09AAE819476}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Tworzenie tabeli DimGender"
+          DTS:ThreadHint="5">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;;&#xA;CREATE TABLE DimGender&#xA;(&#xA;&#x9;Gender VARCHAR(20) NOT NULL,&#xA;&#x9;CONSTRAINT PK_DimGender PRIMARY KEY (Gender)&#xA;);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimOfficer"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
@@ -1298,6 +1408,23 @@
               SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
               SQLTask:BypassPrepare="False"
               SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;CREATE TABLE DimOfficer&#xA;(&#xA;&#x9;Id VARCHAR(50) NOT NULL,&#xA;&#x9;DepartmentName VARCHAR(200) NOT NULL&#xA;&#x9;CONSTRAINT PK_DimOfficer PRIMARY KEY (Id)&#xA;)&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimRace"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{99438658-75D5-492C-B793-805CF68C8F53}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Tworzenie tabeli DimRace"
+          DTS:ThreadHint="4">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{022EDDA3-E2FA-447F-9D8B-00A77FDC8607}"
+              SQLTask:BypassPrepare="False"
+              SQLTask:SqlStatementSource="USE &quot;Projekt2019&quot;&#xA;CREATE TABLE DimRace&#xA;(&#xA;&#x9;Race VARCHAR(50) NOT NULL&#xA;&#x9;CONSTRAINT PK_DimRace PRIMARY KEY (Race)&#xA;);&#xA;USE master;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -1393,6 +1520,30 @@
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 4"
           DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimOfficer" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 5]"
+          DTS:CreationName=""
+          DTS:DTSID="{3E923AEB-4A4B-46BC-9753-99653738488C}"
+          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 5"
+          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimAge" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 6]"
+          DTS:CreationName=""
+          DTS:DTSID="{5D9AD146-CA3A-4337-A667-6866456A2ACD}"
+          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 6"
+          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimRace" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 7]"
+          DTS:CreationName=""
+          DTS:DTSID="{91945ECB-9B93-4C36-9FC8-AAB1A761B1E3}"
+          DTS:From="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli Pomocniczej"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 7"
+          DTS:To="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimGender" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
   </DTS:Executables>
@@ -1417,7 +1568,7 @@
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="206.4,41.6"
           Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimDate"
@@ -1562,13 +1713,127 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="202.4,41.6"
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimAge"
+          TopLeft="492.832666323693,172.813448846829" />
+        <EdgeLayout
+          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 4]"
+          TopLeft="463.873027042467,44.0366028896803">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="110.159639281226,128.776845957149"
+              Start="0,0"
+              End="110.159639281226,121.276845957149">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.8886436729339" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.8886436729339"
+                    Point2="0,33.8886436729339"
+                    Point3="4,33.8886436729339" />
+                  <mssgle:LineSegment
+                    End="106.159639281226,33.8886436729339" />
+                  <mssgle:CubicBezierSegment
+                    Point1="106.159639281226,33.8886436729339"
+                    Point2="110.159639281226,33.8886436729339"
+                    Point3="110.159639281226,37.8886436729339" />
+                  <mssgle:LineSegment
+                    End="110.159639281226,121.276845957149" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="207.2,41.6"
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli DimRace"
+          TopLeft="587.706136309232,124.947902101299" />
+        <EdgeLayout
+          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 5]"
+          TopLeft="469.015884185324,44.0366028896803">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="199.890252123908,80.9112992116186"
+              Start="0,0"
+              End="199.890252123908,73.4112992116186">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.2046274393336" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.2046274393336"
+                    Point2="0,19.2046274393336"
+                    Point3="4,19.2046274393336" />
+                  <mssgle:LineSegment
+                    End="195.890252123908,19.2046274393336" />
+                  <mssgle:CubicBezierSegment
+                    Point1="195.890252123908,19.2046274393336"
+                    Point2="199.890252123908,19.2046274393336"
+                    Point3="199.890252123908,23.2046274393336" />
+                  <mssgle:LineSegment
+                    End="199.890252123908,73.4112992116186" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="189.6,41.6"
+          Id="Package\Napełnianie hurtowni danymi\Napełnianie DimGender"
+          TopLeft="697.044911888946,74.393279431353" />
+        <EdgeLayout
+          Id="Package\Napełnianie hurtowni danymi.PrecedenceConstraints[Constraint 6]"
+          TopLeft="472.873027042467,44.0366028896803">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="305.371884846479,30.3566765416727"
+              Start="0,0"
+              End="305.371884846479,22.8566765416727">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,2.58081799155143" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,2.58081799155143"
+                    Point2="0,6.58081799155143"
+                    Point3="4,6.58081799155143" />
+                  <mssgle:LineSegment
+                    End="301.371884846479,6.58081799155143" />
+                  <mssgle:CubicBezierSegment
+                    Point1="301.371884846479,6.58081799155143"
+                    Point2="305.371884846479,6.58081799155143"
+                    Point3="305.371884846479,10.5808179915514" />
+                  <mssgle:LineSegment
+                    End="305.371884846479,22.8566765416727" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="715.2,407.2"
-          Size="715.2,450.4"
+          PanelSize="939.2,407.2"
+          Size="939.2,450.4"
           Id="Package\Napełnianie hurtowni danymi"
-          TopLeft="740.555567016677,41.4082172007159" />
+          TopLeft="819.086179762045,41.4082172007159" />
         <NodeLayout
           Size="188,41.6"
           Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie bazy danych"
@@ -1739,39 +2004,153 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="632.8,474.4"
-          Size="632.8,517.6"
-          Id="Package\Tworzenie struktury Hurtowni danych"
-          TopLeft="47.2358284688205,26.1820731963253" />
+        <NodeLayout
+          Size="195.2,41.6"
+          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimAge"
+          TopLeft="376.800005585807,203.247062650106" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="680.03582846882,284.982073196325">
+          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 5]"
+          TopLeft="218.507937470261,125.207845768384">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="60.5197385478563,-18.3738559956094"
+              EndConnector="239.492068115546,78.0392168817224"
               Start="0,0"
-              End="53.0197385478563,-18.3738559956094">
+              End="239.492068115546,70.5392168817224">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="26.2598692739281,0" />
+                    End="0,16.5701196671931" />
                   <mssgle:CubicBezierSegment
-                    Point1="26.2598692739281,0"
-                    Point2="30.2598692739281,0"
-                    Point3="30.2598692739281,-4" />
+                    Point1="0,16.5701196671931"
+                    Point2="0,20.5701196671931"
+                    Point3="4,20.5701196671931" />
                   <mssgle:LineSegment
-                    End="30.2598692739281,-14.3738559956094" />
+                    End="235.492068115546,20.5701196671931" />
                   <mssgle:CubicBezierSegment
-                    Point1="30.2598692739281,-14.3738559956094"
-                    Point2="30.2598692739281,-18.3738559956094"
-                    Point3="34.2598692739281,-18.3738559956094" />
+                    Point1="235.492068115546,20.5701196671931"
+                    Point2="239.492068115546,20.5701196671931"
+                    Point3="239.492068115546,24.5701196671931" />
                   <mssgle:LineSegment
-                    End="53.0197385478563,-18.3738559956094" />
+                    End="239.492068115546,70.5392168817224" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="162.4,41.6"
+          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimRace"
+          TopLeft="469.534702677491,152.383196390542" />
+        <EdgeLayout
+          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 6]"
+          TopLeft="223.47936604169,125.207845768384">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="327.255336635801,27.1753506221575"
+              Start="0,0"
+              End="327.255336635801,19.6753506221575">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,2.46356270322108" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,2.46356270322108"
+                    Point2="0,6.46356270322108"
+                    Point3="4,6.46356270322108" />
+                  <mssgle:LineSegment
+                    End="323.255336635801,6.46356270322108" />
+                  <mssgle:CubicBezierSegment
+                    Point1="323.255336635801,6.46356270322108"
+                    Point2="327.255336635801,6.46356270322108"
+                    Point3="327.255336635801,10.4635627032211" />
+                  <mssgle:LineSegment
+                    End="327.255336635801,19.6753506221575" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="162.4,41.6"
+          Id="Package\Tworzenie struktury Hurtowni danych\Tworzenie tabeli DimGender"
+          TopLeft="560.832662625772,98.1848761680629" />
+        <EdgeLayout
+          Id="Package\Tworzenie struktury Hurtowni danych.PrecedenceConstraints[Constraint 7]"
+          TopLeft="257.307937470261,104.407845768384">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="303.524725155511,14.5770303996789"
+              Start="0,0"
+              End="296.024725155511,14.5770303996789">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="147.762362577755,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="147.762362577755,0"
+                    Point2="151.762362577755,0"
+                    Point3="151.762362577755,4" />
+                  <mssgle:LineSegment
+                    End="151.762362577755,10.5770303996789" />
+                  <mssgle:CubicBezierSegment
+                    Point1="151.762362577755,10.5770303996789"
+                    Point2="151.762362577755,14.5770303996789"
+                    Point3="155.762362577755,14.5770303996789" />
+                  <mssgle:LineSegment
+                    End="296.024725155511,14.5770303996789" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="731.2,474.4"
+          Size="731.2,517.6"
+          Id="Package\Tworzenie struktury Hurtowni danych"
+          TopLeft="0.705215431511078,24.4341740121478" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="731.905215431511,283.234174012148">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="87.180964330534,-16.6259568114319"
+              Start="0,0"
+              End="79.680964330534,-16.6259568114319">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="39.590482165267,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="39.590482165267,0"
+                    Point2="43.590482165267,0"
+                    Point3="43.590482165267,-4" />
+                  <mssgle:LineSegment
+                    End="43.590482165267,-12.6259568114319" />
+                  <mssgle:CubicBezierSegment
+                    Point1="43.590482165267,-12.6259568114319"
+                    Point2="43.590482165267,-16.6259568114319"
+                    Point3="47.590482165267,-16.6259568114319" />
+                  <mssgle:LineSegment
+                    End="79.680964330534,-16.6259568114319" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1787,37 +2166,35 @@
     design-time-name="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="145.6,41.6"
           Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Żródło danych"
           TopLeft="172.571431510303,31.2000004375682" />
         <NodeLayout
-          Size="168,41.6"
+          Size="168,48"
           Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej\Tabela pomocnicza"
-          TopLeft="159.428574143624,188.423532054334" />
+          TopLeft="167.428574279863,222.682356064213" />
         <EdgeLayout
           Id="Package\Napełnianie hurtowni danymi\Napełnianie tabeli Pomocniczej.Paths[Flat File Source Output]"
-          TopLeft="244.400002826963,72.8000004375682">
+          TopLeft="248.400002895083,72.8000004375682">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,115.623531616765"
+              EndConnector="0,149.882355626645"
               Start="0,0"
-              End="0,108.123531616765">
+              End="0,142.382355626645">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,108.123531616765" />
+                    End="0,142.382355626645" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
